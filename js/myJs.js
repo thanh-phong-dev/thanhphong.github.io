@@ -1,16 +1,14 @@
 const textConfig = {
-  text1: "He luu cậu!",
-  text2: "Tớ có điều này muốn hỏi cậu nhớ phải trả lời thật lòng nhaaa.",
-  text3: "Cậu yêu tớ có phải không nào ._.",
-  text4: "Nếu cậu ko trả lời mà thoát ra tức là muốn làm vợ tớ rùi đó nha :v",
-  text5: "Cậu mơ à???",
-  text6: "Yêu ơi là yêu <3",
+  text1: "Hello bạn Thùy Trang dễ thương nè!",
+  text2: "Phong có điều này muốn hỏi Trang nhớ phải trả lời thật lòng nhaaa.",
+  text5: "Phong mơ à???",
+  text6: "Ok luôn <3",
   text7: "lí do cậu thích tớ đi :vvvv",
   text8: "Gửi cho tớ <3",
   text9: "Vì cậu đẹp try vlllll",
-  text10: "Tớ biết mà ^^ Yêu cậu 300.000",
+  text10: "Tớ biết mà ^^ Yêu cậu 3000",
   text11:
-    "Tối nay tớ qua đón cậu đi chơi nhaa :v Còn giờ thì chờ gì nữa mà ko inbox cho tớ đi nàooo",
+    "Qua dịch tui qua đón Trang đi chơi nhaa :v Còn giờ thì chờ gì nữa mà không inbox cho tớ đi nàooo",
   text12: "Okii lunn <3",
 };
 
@@ -19,29 +17,32 @@ $(document).ready(function () {
   setTimeout(function () {
     firstQuestion();
     $(".spinner").fadeOut();
-    $("#preloader").delay(350).fadeOut("slow");
-    $("body").delay(350).css({
+    $("#preloader").delay(1000).fadeOut("slow");
+    $("body").delay(1000).css({
       overflow: "visible",
     });
-  }, 600);
+  }, 1);
 
-  $("#text3").html(textConfig.text3);
-  $("#text4").html(textConfig.text4);
   $("#no").html(textConfig.text5);
   $("#yes").html(textConfig.text6);
 
   function firstQuestion() {
+    $(".container1").hide();
     $(".content").hide();
+    $(".ico").hide();
     Swal.fire({
       title: textConfig.text1,
       text: textConfig.text2,
-      imageUrl: "img/cuteCat.jpg",
-      imageWidth: 300,
-      imageHeight: 300,
+      imageUrl: "img/trang.jpg",
+      imageWidth: 500,
+      imageHeight: 550,
       background: '#fff url("img/iput-bg.jpg")',
       imageAlt: "Custom image",
     }).then(function () {
       $(".content").show(200);
+      $(".ico").show();
+      var audio = new Audio("sound/roitoiluon.mp3");
+      audio.play();
     });
   }
 
@@ -110,38 +111,15 @@ $(document).ready(function () {
     var audio = new Audio("sound/tick.mp3");
     audio.play();
     Swal.fire({
-      title: textConfig.text7,
-      html: true,
       width: 900,
-      padding: "3em",
-      html: "<input type='text' class='form-control' id='txtReason'  placeholder='Whyyy'>",
+      confirmButtonText: textConfig.text12,
       background: '#fff url("img/iput-bg.jpg")',
-      backdrop: `
-                    rgba(0,0,123,0.4)
-                    url("img/giphy2.gif")
-                    left top
-                    no-repeat
-                  `,
-      showCancelButton: false,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonColor: "#fe8a71",
-      cancelButtonColor: "#f6cd61",
-      confirmButtonText: textConfig.text8,
-    }).then((result) => {
-      if (result.value) {
-        Swal.fire({
-          width: 900,
-          confirmButtonText: textConfig.text12,
-          background: '#fff url("img/iput-bg.jpg")',
-          title: textConfig.text10,
-          text: textConfig.text11,
-          confirmButtonColor: "#83d0c9",
-          onClose: () => {
-            window.location = "http://fb.com";
-          },
-        });
-      }
+      title: textConfig.text10,
+      text: textConfig.text11,
+      confirmButtonColor: "#83d0c9",
+      onClose: () => {
+        window.location = "https://www.facebook.com/messages/t/100005167903138";
+      },
     });
 
     $("#txtReason").focus(function () {
@@ -154,3 +132,54 @@ $(document).ready(function () {
     });
   });
 });
+
+function consoleText(words, id, colors) {
+  if (colors === undefined) colors = ['#fff'];
+  var visible = true;
+  var con = document.getElementById('console');
+  var letterCount = 1;
+  var x = 1;
+  var waiting = false;
+  var target = document.getElementById(id)
+  target.setAttribute('style', 'color:' + colors[0])
+  target.setAttribute('style', 'font-family:' + "Pacifico")
+
+  window.setInterval(function () {
+    if (letterCount === 0 && waiting === false) {
+      waiting = true;
+      target.innerHTML = words[0].substring(0, letterCount)
+      window.setTimeout(function () {
+        var usedColor = colors.shift();
+        colors.push(usedColor);
+        var usedWord = words.shift();
+        words.push(usedWord);
+        x = 1;
+        target.setAttribute('style', 'color:' + colors[0])
+        target.setAttribute('style', 'font-family:' + "Pacifico")
+        letterCount += x;
+        waiting = false;
+      }, 10)
+    } else if (letterCount === words[0].length + 1 && waiting === false) {
+      waiting = true;
+      window.setTimeout(function () {
+        x = -1;
+        letterCount += x;
+        waiting = false;
+      }, 1)
+    } else if (waiting === false) {
+      target.innerHTML = words[0].substring(0, letterCount)
+      letterCount += x;
+    }
+  }, 150)
+  window.setInterval(function () {
+    if (visible === true) {
+      con.className = 'console-underscore hidden'
+      visible = false;
+
+    } else {
+      con.className = 'console-underscore'
+
+      visible = true;
+    }
+  }, 400)
+}
